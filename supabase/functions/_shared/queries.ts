@@ -14,3 +14,22 @@ export function getCountriesWithCities(client: SupabaseClient<Database>) {
 export type CountriesWithCities = QueryData<
   ReturnType<typeof getCountriesWithCities>
 >
+
+export function getCountryById(client: SupabaseClient<Database>, id: number) {
+  return client
+    .from('countries')
+    .select(
+      `
+  id,
+  name,
+  cities (
+    id,
+    name
+  )
+`
+    )
+    .eq('id', id)
+    .single()
+}
+
+export type CountryWithCities = QueryData<ReturnType<typeof getCountryById>>
